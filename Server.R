@@ -3,12 +3,12 @@ library(rgdal)
 library(INLA)
 library(viridis)
 
-data=read.csv("data\\wpd_arrests_race_tract1018_clean.csv")
-fe=read.csv("data\\INLAdata.csv")[,-1]
+data=read.csv("data/wpd_arrests_race_tract1018_clean.csv")
+fe=read.csv("data/INLAdata.csv")[,-1]
 #replace NA with 0...assume informative NA's
 data[is.na(data)]=0
 
-NHtracts=readOGR("data\\NHTracts.shp")
+NHtracts=readOGR("data/NHTracts.shp")
 
 #simply plot the arrest data
 shinyServer(function(input,output){
