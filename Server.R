@@ -3,16 +3,12 @@ library(rgdal)
 library(INLA)
 library(viridis)
 
-data=read.csv("C:\\Users\\rmg4626\\Downloads\\wpd_arrests_race_tract1018_clean.csv")
-fe=read.csv("C:\\Users\\rmg4626\\Downloads\\INLAdata (1).csv")[,-1]
+data=read.csv("data\\wpd_arrests_race_tract1018_clean.csv")
+fe=read.csv("data\\INLAdata.csv")[,-1]
 #replace NA with 0...assume informative NA's
 data[is.na(data)]=0
 
-NCtracts=readOGR("C:\\Users\\rmg4626\\Downloads\\tl_2016_37_tract\\tl_2016_37_tract\\tl_2016_37_tract.shp")
-NHtracts=NCtracts[which(NCtracts$COUNTYFP==129),]#45 tracts in New Hanover
-NHtracts=NHtracts[order(NHtracts$TRACTCE),]#reorder shp by smallest to largest tract code (same as data)
-NHtracts=NHtracts[-45,]#remove the ocean tract
-
+NHtracts=readOGR("data\\NHTracts.shp")
 
 #simply plot the arrest data
 shinyServer(function(input,output){
