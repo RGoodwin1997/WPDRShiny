@@ -46,40 +46,33 @@ fillmap2<-function(map, figtitle, y , leg.loc="beside", y.scl=NULL,
   }
 }
 
-data=read.csv("C:\\Users\\rmg4626\\Downloads\\data\\fulldataset.csv")
-fe=read.csv("C:\\Users\\rmg4626\\Downloads\\data\\fe.csv")[,-1]
-#replace NA with 0...assume informative NA's
+data=read.csv("data\\fulldataset.csv")
+fe=read.csv("data\\fe.csv")[,-1]
 data[is.na(data)]=0
 
-NHtracts=readOGR("C:\\Users\\rmg4626\\Downloads\\data\\NHTracts.shp")
+NHtracts=readOGR("data\\NHTracts.shp")
 
 
 
 
-d.inla=read.csv("C:\\Users\\rmg4626\\Downloads\\data\\INLAdata.csv")[,-1]
+d.inla=read.csv("data\\INLAdata.csv")[,-1]
 ftot=arrests_total ~ black+poverty+educBachPlus+male+secpercvac+age1824.perc
 restotglm=glm(ftot, data = d.inla, family=poisson)
 restot=inla(ftot, data = d.inla, family='Poisson', E=eTot, control.compute=list(dic=TRUE,waic=TRUE))
-#summary(restot)
 fblk=arrests_B ~ black+poverty+educBachPlus+male+secpercvac+age1824.perc
 resblkglm=glm(fblk, data = d.inla, family=poisson)
 resblk=inla(ftot, data = d.inla, family='Poisson', E=eTot, control.compute=list(dic=TRUE,waic=TRUE))
-#summary(resblk)
 fwht=arrests_W ~ black+poverty+educBachPlus+male+secpercvac+age1824.perc
 reswhtglm=glm(fwht, data = d.inla, family=poisson)
 reswht=inla(fwht, data = d.inla, family='Poisson', E=eTot, control.compute=list(dic=TRUE,waic=TRUE))
-#summary(reswht)
 
 d.inla$govt=ifelse(d.inla$police.dept==1|d.inla$courthouse==1, 1, 0)
 ftotRE=arrests_total~black+poverty+educBachPlus+male+secpercvac+age1824.perc+govt+f(id2,model='iid',param=c(2,1))
 restotRE=inla(ftotRE,data = d.inla, family = 'Poisson',E=eTot, control.compute = list(dic=TRUE, waic=TRUE))
-#summary(restotRE)
 fblkRE=arrests_B~black+poverty+educBachPlus+male+secpercvac+age1824.perc+govt+f(id2,model='iid',param=c(2,1))
 resblkRE=inla(fblkRE,data = d.inla, family = 'Poisson',E=eTot, control.compute = list(dic=TRUE, waic=TRUE))
-#summary(resblkRE)
 fwhtRE=arrests_W~black+poverty+educBachPlus+male+secpercvac+age1824.perc+govt+f(id2,model='iid',param=c(2,1))
 reswhtRE=inla(fwhtRE,data = d.inla, family = 'Poisson',E=eTot, control.compute = list(dic=TRUE, waic=TRUE))
-#summary(restotRE)
 
 
 
