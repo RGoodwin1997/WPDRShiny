@@ -48,17 +48,16 @@ fillmap2<-function(map, figtitle, y , leg.loc="beside", y.scl=NULL,
   }
 }
 
-data=read.csv("C:\\Users\\rmg4626\\Downloads\\data\\fulldataset.csv")
-fe=read.csv("C:\\Users\\rmg4626\\Downloads\\data\\fe.csv")[,-1]
-#replace NA with 0...assume informative NA's
+data=read.csv("data\\fulldataset.csv")
+fe=read.csv("data\\fe.csv")[,-1]
 data[is.na(data)]=0
 
-NHtracts=readOGR("C:\\Users\\rmg4626\\Downloads\\data\\NHTracts.shp")
+NHtracts=readOGR("data\\NHTracts.shp")
 
 
 
 
-d.inla=read.csv("C:\\Users\\rmg4626\\Downloads\\data\\INLAdata.csv")[,-1]
+d.inla=read.csv("data\\INLAdata.csv")[,-1]
 ftot=arrests_total ~ black+poverty+educBachPlus+male+secpercvac+age1824.perc
 restotglm=glm(ftot, data = d.inla, family=poisson)
 restot=inla(ftot, data = d.inla, family='Poisson', E=eTot, control.compute=list(dic=TRUE,waic=TRUE))
